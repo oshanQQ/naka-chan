@@ -1,1 +1,1 @@
-web: cargo run --release
+web: ./target/release/naka-chan
