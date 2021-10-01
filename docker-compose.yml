@@ -20,6 +20,6 @@ services:
     container_name: naka_chan_develop
     environment:
       USER: naka_chan
-      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      DISCORD_TOKEN: ${DISCORD_TOKEN_DEV}
     ports: 
       - 8081:80
