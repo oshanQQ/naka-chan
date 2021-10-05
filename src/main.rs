@@ -22,7 +22,8 @@ use serenity::{
     model::{
         channel::Message,
         gateway::{Activity, Ready},
-        id::{ChannelId, GuildId, UserId},
+        // id::{ChannelId, GuildId, UserId},
+        id::{GuildId, UserId},
     },
     prelude::*,
 };
@@ -78,18 +79,22 @@ impl EventHandler for Handler {
 
         // ループがすでに実行されていないかどうかを確認
         if !self.is_loop_running.load(Ordering::Relaxed) {
-            let ctx1 = Arc::clone(&ctx);
+            println!("Let's check the status of the loop");
+            // let ctx1 = Arc::clone(&ctx);
             // 並行して実行できる新しいスレッドを作成
             tokio::spawn(async move {
+                println!("Spawn first thread!");
                 loop {
-                    log_system_load(Arc::clone(&ctx1)).await;
+                    // log_system_load(Arc::clone(&ctx1)).await;
                     tokio::time::sleep(Duration::from_secs(120)).await;
+                    println!("Running the loop...");
                 }
             });
 
             // 複数のスレッドを異なるタイミングで実行
             let ctx2 = Arc::clone(&ctx);
             tokio::spawn(async move {
+                println!("Spawn second thread!");
                 loop {
                     set_status_to_current_time(Arc::clone(&ctx2)).await;
                     tokio::time::sleep(Duration::from_secs(60)).await;
@@ -102,38 +107,39 @@ impl EventHandler for Handler {
     }
 }
 
-async fn log_system_load(ctx: Arc<Context>) {
-    let cpu_load = sys_info::loadavg().unwrap();
-    let mem_use = sys_info::mem_info().unwrap();
+// async fn log_system_load(ctx: Arc<Context>) {
+//     let cpu_load = sys_info::loadavg().unwrap();
+//     let mem_use = sys_info::mem_info().unwrap();
 
-    // 特定のチャンネルにメッセージを送信
-    if let Err(why) = ChannelId(381926291785383946)
-        .send_message(&ctx, |m| {
-            m.embed(|e| {
-                e.title("System Resource Load");
-                e.field(
-                    "CPU Load Average",
-                    format!("{:.2}%", cpu_load.one * 10.0),
-                    false,
-                );
-                e.field(
-                    "Memory Usage",
-                    format!(
-                        "{:.2} MB Free out of {:.2} MB",
-                        mem_use.free as f32 / 1000.0,
-                        mem_use.total as f32 / 1000.0
-                    ),
-                    false,
-                );
-                e
-            })
-        })
-        .await
-    {
-        eprintln!("Error sending message: {:?}", why);
-    };
-}
+//     // 特定のチャンネルにメッセージを送信
+//     if let Err(why) = ChannelId(381926291785383946)
+//         .send_message(&ctx, |m| {
+//             m.embed(|e| {
+//                 e.title("System Resource Load");
+//                 e.field(
+//                     "CPU Load Average",
+//                     format!("{:.2}%", cpu_load.one * 10.0),
+//                     false,
+//                 );
+//                 e.field(
+//                     "Memory Usage",
+//                     format!(
+//                         "{:.2} MB Free out of {:.2} MB",
+//                         mem_use.free as f32 / 1000.0,
+//                         mem_use.total as f32 / 1000.0
+//                     ),
+//                     false,
+//                 );
+//                 e
+//             })
+//         })
+//         .await
+//     {
+//         eprintln!("Error sending message: {:?}", why);
+//     };
+// }
 
+// botのステータスを更新
 async fn set_status_to_current_time(ctx: Arc<Context>) {
     let current_time = Utc::now();
     let formatted_time = current_time.to_rfc2822();
