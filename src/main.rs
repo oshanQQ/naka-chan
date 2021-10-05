@@ -1,10 +1,17 @@
-use std::{env, collections::HashSet};
+use std::{collections::HashSet, env};
 
 use serenity::{
     async_trait,
+    framework::{
+        standard::{
+            help_commands,
+            macros::{group, help},
+            Args, CommandGroup, CommandResult, HelpOptions,
+        },
+        StandardFramework,
+    },
     model::{channel::Message, gateway::Ready, id::UserId},
     prelude::*,
-    framework::{StandardFramework, standard::{Args, CommandGroup, CommandResult, HelpOptions, help_commands, macros::{group, help}}},
 };
 
 mod commands;
@@ -24,7 +31,7 @@ async fn my_help(
     Ok(())
 }
 
-use commands::{nakachan::*};
+use commands::nakachan::*;
 #[group]
 #[description("汎用コマンド")]
 #[summary("一般")]
@@ -55,7 +62,10 @@ async fn main() {
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
     // コマンド系の設定
-    let framework = StandardFramework::new().configure(|c| c.prefix("!")).help(&MY_HELP).group(&GENERAL_GROUP);
+    let framework = StandardFramework::new()
+        .configure(|c| c.prefix("!"))
+        .help(&MY_HELP)
+        .group(&GENERAL_GROUP);
 
     let mut client = Client::builder(&token)
         .event_handler(Handler)
