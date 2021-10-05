@@ -79,18 +79,22 @@ impl EventHandler for Handler {
 
         // ループがすでに実行されていないかどうかを確認
         if !self.is_loop_running.load(Ordering::Relaxed) {
+            println!("Let's check the status of the loop");
             // let ctx1 = Arc::clone(&ctx);
             // 並行して実行できる新しいスレッドを作成
             tokio::spawn(async move {
+                println!("Spawn first thread!");
                 loop {
                     // log_system_load(Arc::clone(&ctx1)).await;
                     tokio::time::sleep(Duration::from_secs(120)).await;
+                    println!("Running the loop...");
                 }
             });
 
             // 複数のスレッドを異なるタイミングで実行
             let ctx2 = Arc::clone(&ctx);
             tokio::spawn(async move {
+                println!("Spawn second thread!");
                 loop {
                     set_status_to_current_time(Arc::clone(&ctx2)).await;
                     tokio::time::sleep(Duration::from_secs(60)).await;
@@ -135,6 +139,7 @@ impl EventHandler for Handler {
 //     };
 // }
 
+// botのステータスを更新
 async fn set_status_to_current_time(ctx: Arc<Context>) {
     let current_time = Utc::now();
     let formatted_time = current_time.to_rfc2822();
