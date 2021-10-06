@@ -2,7 +2,7 @@ use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::{async_trait, prelude::*};
 
-pub struct Handler {}
+pub struct Handler;
 
 #[async_trait]
 impl EventHandler for Handler {
