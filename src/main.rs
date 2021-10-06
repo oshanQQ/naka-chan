@@ -14,8 +14,8 @@ async fn main() {
     // コマンド系の設定
     let framework = StandardFramework::new()
         .configure(|c| c.prefix("!"))
-        .help(&commands::help::MY_HELP);
-
+        .help(&commands::help::MY_HELP)
+        .group(&commands::groups::general::GENERAL_GROUP);
     let mut client = Client::builder(&token)
         .event_handler(handler::Handler {})
         .framework(framework)
