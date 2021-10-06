@@ -1,5 +1,4 @@
 use std::env;
-use std::sync::atomic::AtomicBool;
 
 use serenity::framework::StandardFramework;
 use serenity::prelude::*;
@@ -18,13 +17,11 @@ async fn main() {
         .help(&commands::help::MY_HELP);
 
     let mut client = Client::builder(&token)
-        .event_handler(handler::Handler {
-            is_loop_running: AtomicBool::new(false),
-        })
+        .event_handler(handler::Handler {})
         .framework(framework)
         .await
         .expect("Err creating client");
-    if let Err(why) = client.start().await {
+    if let Err(why) = client.start_autosharded().await {
         println!("Client error: {:?}", why);
     }
 }
