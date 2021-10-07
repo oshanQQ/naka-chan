@@ -1,36 +1,36 @@
 use std::env;
 
-use serenity::{
-    async_trait,
-    model::{channel::Message, gateway::Ready},
-    prelude::*,
-};
+use serenity::client::ClientBuilder;
+use serenity::framework::StandardFramework;
+use serenity::http::HttpBuilder;
 
-struct Handler;
-#[async_trait]
-impl EventHandler for Handler {
-    async fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "!ping" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-    }
-
-    async fn ready(&self, _: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
-    }
-}
+mod commands;
+mod handler;
 
 #[tokio::main]
 async fn main() {
+    // Discordのbot Tokenを設定
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
+    let port = env::var("PORT").expect("Expected a port in the environment");
 
-    let mut client = Client::builder(&token)
-        .event_handler(Handler)
+    // コマンド系の設定
+    let framework = StandardFramework::new()
+        .configure(|c| c.prefix("!"))
+        .help(&commands::help::MY_HELP)
+        .group(&commands::groups::general::GENERAL_GROUP);
+
+    let http = HttpBuilder::new(token)
+        .proxy(format!("http://0.0.0.0:{}", port))
+        .expect("Invalid proxy URL")
+        .await
+        .expect("Error creating Http");
+    let mut client = ClientBuilder::new_with_http(http)
+        .event_handler(handler::Handler {})
+        .framework(framework)
         .await
         .expect("Err creating client");
-    if let Err(why) = client.start().await {
+
+    if let Err(why) = client.start_autosharded().await {
         println!("Client error: {:?}", why);
     }
 }
