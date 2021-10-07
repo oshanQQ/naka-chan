@@ -20,3 +20,4 @@ jobs:
           script: |
             cd nakachan-app
             git pull origin master     
+            cargo run --release
