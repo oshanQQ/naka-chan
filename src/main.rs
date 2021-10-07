@@ -1,8 +1,7 @@
 use std::env;
 
-use serenity::client::ClientBuilder;
 use serenity::framework::StandardFramework;
-use serenity::http::HttpBuilder;
+use serenity::prelude::*;
 
 mod commands;
 mod handler;
@@ -11,20 +10,13 @@ mod handler;
 async fn main() {
     // Discordのbot Tokenを設定
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
-    let port = env::var("PORT").expect("Expected a port in the environment");
 
     // コマンド系の設定
     let framework = StandardFramework::new()
         .configure(|c| c.prefix("!"))
         .help(&commands::help::MY_HELP)
         .group(&commands::groups::general::GENERAL_GROUP);
-
-    let http = HttpBuilder::new(token)
-        .proxy(format!("http://0.0.0.0:{}", port))
-        .expect("Invalid proxy URL")
-        .await
-        .expect("Error creating Http");
-    let mut client = ClientBuilder::new_with_http(http)
+    let mut client = Client::builder(&token)
         .event_handler(handler::Handler {})
         .framework(framework)
         .await
