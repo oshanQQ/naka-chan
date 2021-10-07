@@ -6,17 +6,32 @@ pub struct Handler;
 
 #[async_trait]
 impl EventHandler for Handler {
-    // botがメッセージを受け取った時の処理
+    // botが特定のメッセージを受け取った時の処理
     async fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "!ping" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
-                println!("Error sending message: {:?}", why);
+        #[cfg(debug_assertions)]
+        {
+            if msg.content == "quit" {
+                log::info!("quit command received");
+                log::warn!("naka-chan will be stopped...");
+                std::process::exit(0);
             }
+        }
+
+        let handling = match msg.content.as_str() {
+            "ping" => {
+                log::info!("the ping message received.");
+                msg.channel_id.say(&ctx.http, "Pong!")
+            }
+            _ => return,
+        };
+
+        if let Err(why) = handling.await {
+            log::error!("Error {:?} of sending message: {:?}", why, msg.content);
         }
     }
 
     // botがonlineになった時の処理
     async fn ready(&self, _: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
+        log::info!("{} is connected!", ready.user.name);
     }
 }
