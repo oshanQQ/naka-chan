@@ -4,7 +4,6 @@ use serenity::framework::StandardFramework;
 use serenity::prelude::*;
 
 mod commands;
-mod handler;
 
 #[tokio::main]
 async fn main() {
@@ -26,7 +25,7 @@ async fn main() {
         .group(&commands::groups::general::GENERAL_GROUP);
 
     let mut client = Client::builder(&token)
-        .event_handler(handler::Handler {})
+        .event_handler(commands::Handler {})
         .framework(framework)
         .await
         .expect("Err creating client");
