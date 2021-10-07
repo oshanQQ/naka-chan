@@ -21,4 +21,5 @@ jobs:
             source $HOME/.bashrc
             cd nakachan-app
             git pull origin master     
-            cargo run --release
+            pkill cargo
+            cargo run --release&
