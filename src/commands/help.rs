@@ -15,6 +15,7 @@ async fn my_help(
     groups: &[&'static framework::CommandGroup],
     owners: HashSet<UserId>,
 ) -> framework::CommandResult {
+    log::info!("help command requested.");
     let _ =
         framework::help_commands::with_embeds(ctx, msg, args, help_options, groups, owners).await;
     Ok(())
