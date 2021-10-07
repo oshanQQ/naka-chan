@@ -18,8 +18,5 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           port: ${{secrets.SSH_PORT}}
           script: |
-            source $HOME/.bashrc
             cd nakachan-app
             git pull origin master     
-            pkill cargo
-            cargo run --release&
