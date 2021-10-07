@@ -16,6 +16,7 @@ async fn my_help(
     owners: HashSet<UserId>,
 ) -> framework::CommandResult {
     log::info!("help command requested.");
+    super::log_message_detail(&ctx.http, msg).await;
     let _ =
         framework::help_commands::with_embeds(ctx, msg, args, help_options, groups, owners).await;
     Ok(())
