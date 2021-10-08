@@ -19,11 +19,11 @@ impl EventHandler for Handler {
         }
 
         let argv = msg.content.split_whitespace().collect::<Vec<&str>>();
-        if !msg.content.starts_with("!") {
+        if !msg.content.starts_with('!') {
             return;
         }
 
-        let result = match argv[0].trim_start_matches("!") {
+        let result = match argv[0].trim_start_matches('!') {
             "ping" => Ping::new(&ctx, &msg).execute(&argv[..]),
             "help" => Help::new(&ctx, &msg).execute(&argv[..]),
             "nakachan" => Nakachan::new(&ctx, &msg).execute(&argv[..]),

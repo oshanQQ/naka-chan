@@ -11,7 +11,7 @@ impl<'a> super::Command<'a> for Nakachan<'a> {
     crate::accessor_impl!((get = get_ctx) ctx: &Context);
     crate::accessor_impl!((get = get_msg) msg: &Message);
     fn new(ctx: &'a Context, msg: &'a Message) -> Nakachan<'a> {
-        Nakachan { ctx: ctx, msg: msg }
+        Nakachan { ctx, msg }
     }
 
     async fn execute(self, _argv: &[&str]) -> anyhow::Result<Message> {
