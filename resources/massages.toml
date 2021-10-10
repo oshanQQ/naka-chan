@@ -1,0 +1,7 @@
+message = """
+```
+help: This is a help command of naka-chan
+ping: the ping command
+"nakachan: 那珂ちゃんがしゃべりまーす！"
+```
+"""
