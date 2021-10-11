@@ -24,8 +24,4 @@ impl<'a> super::Command<'a> for Ping<'a> {
     fn descript() -> &'static str {
         "ping: the ping command"
     }
-
-    fn help(&self) -> String {
-        Self::descript().to_owned()
-    }
 }

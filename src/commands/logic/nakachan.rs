@@ -22,7 +22,4 @@ impl<'a> super::Command<'a> for Nakachan<'a> {
     fn descript() -> &'static str {
         "nakachan: 那珂ちゃんがしゃべりまーす！"
     }
-    fn help(&self) -> String {
-        Self::descript().to_owned()
-    }
 }

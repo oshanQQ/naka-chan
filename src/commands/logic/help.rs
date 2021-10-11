@@ -32,14 +32,4 @@ impl<'a> super::Command<'a> for Help<'a> {
     fn descript() -> &'static str {
         "help: This is a help command of naka-chan"
     }
-    fn help(&self) -> String {
-        use std::io::Write;
-
-        let mut s = vec![];
-        writeln!(s, "{}", Help::descript()).unwrap();
-        writeln!(s, "{}", super::Ping::descript()).unwrap();
-        writeln!(s, "{}", super::Nakachan::descript()).unwrap();
-
-        format!("```{}```", String::from_utf8(s).unwrap())
-    }
 }

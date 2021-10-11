@@ -17,12 +17,11 @@ pub trait Command<'a> {
     fn new(ctx: &'a Context, msg: &'a Message) -> Self;
     async fn execute(self, argv: &[&str]) -> anyhow::Result<Message>;
     fn descript() -> &'static str;
-    fn help(&self) -> String;
 
     // default implementation for Command
     fn info(&self) -> (&Context, &Message) {
         (self.get_ctx(), self.get_msg())
-    }
+}
     async fn send(&self, content: &str) -> anyhow::Result<Message> {
         let (ctx, msg) = self.info();
         msg.channel_id
