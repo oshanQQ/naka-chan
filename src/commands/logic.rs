@@ -17,7 +17,6 @@ pub trait Command<'a> {
     fn new(ctx: &'a Context, msg: &'a Message) -> Self;
     async fn execute(self, argv: &[&str]) -> anyhow::Result<Message>;
     fn descript() -> &'static str;
-    fn help(&self) -> String;
 
     // default implementation for Command
     fn info(&self) -> (&Context, &Message) {

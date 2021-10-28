@@ -1,6 +1,8 @@
 use serenity::model::channel::Message;
 use serenity::prelude::Context;
 
+use crate::messages::find_message;
+
 pub struct Help<'a> {
     ctx: &'a Context,
     msg: &'a Message,
@@ -17,19 +19,10 @@ impl<'a> super::Command<'a> for Help<'a> {
     async fn execute(self, _argv: &[&str]) -> anyhow::Result<Message> {
         log::info!("help command requested.");
         self.log_message_detail().await;
-        self.send(self.help().as_str()).await
+
+        self.send(&find_message("help")?).await
     }
     fn descript() -> &'static str {
         "help: This is a help command of naka-chan"
-    }
-    fn help(&self) -> String {
-        use std::io::Write;
-
-        let mut s = vec![];
-        writeln!(s, "{}", Help::descript()).unwrap();
-        writeln!(s, "{}", super::Ping::descript()).unwrap();
-        writeln!(s, "{}", super::Nakachan::descript()).unwrap();
-
-        format!("```{}```", String::from_utf8(s).unwrap())
     }
 }

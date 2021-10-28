@@ -3,6 +3,7 @@ use std::env;
 use serenity::prelude::*;
 
 mod commands;
+mod messages;
 mod utils;
 
 #[tokio::main]
