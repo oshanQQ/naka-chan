@@ -2,6 +2,7 @@ use anyhow::bail;
 use anyhow::Result;
 use lazy_static::lazy_static;
 use serde::Deserialize;
+use std::fmt::{self, Display};
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -22,9 +23,10 @@ struct CommandDescription {
     help: String,
 }
 
-impl CommandDescription {
-    pub fn to_string(&self) -> String {
-        format!(
+impl Display for CommandDescription {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
             "```md
 # {}
 ## Description
