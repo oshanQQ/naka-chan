@@ -1,8 +1,21 @@
-[[message]]
-help = "This is a help command of naka-chan"
+[[command_description]]
+name = "help"
+description = "The Help Command"
+help = """
+  - help: This is a help command of naka-chan
+"""
 
-[[message]]
-ping = "the ping command"
+[[command_description]]
+name = "ping"
+description = "the ping command"
+help = """
+  - ping : return message 'Pong!'
+  - ping -v : print ping description
+"""
 
-[[message]]
-nakachan = "那珂ちゃんがしゃべりまーす！"
+[[command_description]]
+name = "nakachan"
+description = "the nakachan command"
+help = """
+  - nakachan: 那珂ちゃんがしゃべりまーす！
+"""

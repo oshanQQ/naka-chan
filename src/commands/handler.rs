@@ -29,7 +29,8 @@ impl EventHandler for Handler {
             "nakachan" => Nakachan::new(&ctx, &msg).execute(&argv[..]),
             _ => {
                 log::warn!("unknown command '{}'requested.", msg.content);
-                return;
+                todo!("存在しないコマンドです");
+                // return;
             }
         };
 

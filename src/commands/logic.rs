@@ -21,7 +21,7 @@ pub trait Command<'a> {
     // default implementation for Command
     fn info(&self) -> (&Context, &Message) {
         (self.get_ctx(), self.get_msg())
-}
+    }
     async fn send(&self, content: &str) -> anyhow::Result<Message> {
         let (ctx, msg) = self.info();
         msg.channel_id

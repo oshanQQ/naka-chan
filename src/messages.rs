@@ -1,3 +1,5 @@
+use anyhow::bail;
+use anyhow::Result;
 use lazy_static::lazy_static;
 use serde::Deserialize;
 use std::fs::File;
@@ -10,7 +12,7 @@ lazy_static! {
 
 #[derive(Deserialize, Debug)]
 struct MessagesData {
-    messages: Vec<CommandDescription>,
+    command_description: Vec<CommandDescription>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -18,6 +20,21 @@ struct CommandDescription {
     name: String,
     description: String,
     help: String,
+}
+
+impl CommandDescription {
+    pub fn to_string(&self) -> String {
+        format!(
+            "```md
+# {}
+## Description
+{}
+## Usage
+{}
+```",
+            self.name, self.description, self.help
+        )
+    }
 }
 
 fn load_messages() -> MessagesData {
@@ -28,4 +45,12 @@ fn load_messages() -> MessagesData {
         .expect("Failed to convert to string");
 
     toml::from_str(&content).expect("Failed to deserialize")
+}
+
+pub fn find_message(command_name: &str) -> Result<String> {
+    MESSAGES
+        .command_description
+        .iter()
+        .find(|&description| description.name == command_name)
+        .map_or_else(|| bail!("unknown command name"), |c| Ok(c.to_string()))
 }
