@@ -2,6 +2,7 @@ use std::env;
 
 use serenity::framework::StandardFramework;
 use serenity::prelude::*;
+use songbird::SerenityInit;
 
 mod commands;
 
@@ -21,11 +22,14 @@ async fn main() {
     // コマンド系の設定
     let framework = StandardFramework::new()
         .configure(|c| c.prefix("!"))
-        .help(&commands::help::MY_HELP)
+        .help(&commands::groups::general::MY_HELP)
         .group(&commands::groups::general::GENERAL_GROUP);
+
+    //tracing_subscriber::fmt::init();
     let mut client = Client::builder(&token)
         .event_handler(commands::Handler {})
         .framework(framework)
+        .register_songbird()
         .await
         .expect("Err creating client");
 

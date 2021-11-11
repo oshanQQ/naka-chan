@@ -1,7 +1,7 @@
-
 use serenity::http::client::Http;
 use serenity::http::CacheHttp;
 use serenity::model::channel::Message;
+use serenity::Result;
 
 pub async fn log_message_detail(http: impl AsRef<Http> + CacheHttp, msg: &Message) {
     use serenity::model::channel::Channel::*;
@@ -28,4 +28,10 @@ pub async fn log_message_detail(http: impl AsRef<Http> + CacheHttp, msg: &Messag
         msg.author.name,
         msg.content
     );
+}
+
+pub fn check_msg(result: Result<Message>) {
+    if let Err(e) = result {
+        log::error!("Error sending message: {:?}", e);
+    }
 }

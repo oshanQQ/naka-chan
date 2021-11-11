@@ -1,7 +1,4 @@
 pub mod groups;
-pub mod help;
-pub mod nakachan;
-pub mod ping;
 mod utils;
 
 use serenity::model::channel::Message;
