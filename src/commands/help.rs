@@ -4,6 +4,7 @@ use serenity::framework::standard as framework;
 use serenity::framework::standard::macros::*;
 use serenity::model::{channel::Message, id::UserId};
 use serenity::prelude::Context;
+use super::utils;
 
 #[help]
 #[individual_command_tip = "This is a help command of naka-chan"]
@@ -24,7 +25,7 @@ async fn my_help(
     owners: HashSet<UserId>,
 ) -> framework::CommandResult {
     log::info!("help command requested.");
-    super::log_message_detail(&ctx.http, msg).await;
+    utils::log_message_detail(&ctx.http, msg).await;
     let _ =
         framework::help_commands::with_embeds(ctx, msg, args, help_options, groups, owners).await;
     Ok(())

@@ -4,7 +4,6 @@ use serenity::framework::StandardFramework;
 use serenity::prelude::*;
 
 mod commands;
-mod utils;
 
 #[tokio::main]
 async fn main() {
