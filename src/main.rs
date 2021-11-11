@@ -23,7 +23,8 @@ async fn main() {
     let framework = StandardFramework::new()
         .configure(|c| c.prefix("!"))
         .help(&commands::groups::general::MY_HELP)
-        .group(&commands::groups::general::GENERAL_GROUP);
+        .group(&commands::groups::general::GENERAL_GROUP)
+        .group(&commands::groups::play::PLAY_GROUP);
 
     //tracing_subscriber::fmt::init();
     let mut client = Client::builder(&token)
