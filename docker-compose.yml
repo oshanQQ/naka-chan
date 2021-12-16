@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  naka-chan:
+    restart: always
+    tty: true
+    environment:
+      DISCORD_TOKEN: "${DISCORD_TOKEN}"
+    build:
+      context: .
+      dockerfile: "./docker/naka-chan/Dockerfile"
+    entrypoint: "cargo run --release"
